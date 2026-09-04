@@ -1,0 +1,1027 @@
+/* =========================================================
+   ScamLens — style.css
+   Modern cybersecurity investigation dashboard theme.
+   Vanilla CSS3 only. No frameworks.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. CSS VARIABLES / THEME
+   --------------------------------------------------------- */
+:root {
+  /* Core palette — dark cybersecurity dashboard */
+  --bg-color: #0b0f14;
+  --bg-elevated: #121820;
+  --bg-elevated-2: #1a222c;
+  --border-color: #263140;
+  --border-color-soft: #1d2733;
+
+  --text-primary: #e8edf3;
+  --text-secondary: #9fb0c3;
+  --text-muted: #6b7c8f;
+
+  --accent: #3fd0ff;
+  --accent-soft: rgba(63, 208, 255, 0.12);
+  --accent-strong: #1fb6e6;
+
+  /* Risk-state colors */
+  --low-color: #2ecc71;
+  --low-bg: rgba(46, 204, 113, 0.12);
+  --low-border: rgba(46, 204, 113, 0.45);
+
+  --medium-color: #f5c518;
+  --medium-bg: rgba(245, 197, 24, 0.12);
+  --medium-border: rgba(245, 197, 24, 0.45);
+
+  --high-color: #ff9f43;
+  --high-bg: rgba(255, 159, 67, 0.12);
+  --high-border: rgba(255, 159, 67, 0.45);
+
+  --critical-color: #ff4d5e;
+  --critical-bg: rgba(255, 77, 94, 0.14);
+  --critical-border: rgba(255, 77, 94, 0.55);
+
+  --error-color: #ff4d5e;
+  --error-bg: rgba(255, 77, 94, 0.1);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* ---------------------------------------------------------
+   2. RESET / BASE
+   --------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(63, 208, 255, 0.06), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(255, 77, 94, 0.04), transparent 35%);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 0.6em 0;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+h3 {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+h4 {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+p {
+  margin: 0 0 0.75em 0;
+  color: var(--text-secondary);
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---------------------------------------------------------
+   3. LAYOUT SHELL
+   --------------------------------------------------------- */
+.site-header {
+  border-bottom: 1px solid var(--border-color-soft);
+  background: linear-gradient(180deg, rgba(18, 24, 32, 0.9), rgba(11, 15, 20, 0.4));
+  padding: 1.5rem 1.5rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.logo-mark {
+  font-size: 1.4rem;
+  filter: drop-shadow(0 0 6px rgba(63, 208, 255, 0.5));
+}
+
+.logo-text {
+  background: linear-gradient(90deg, var(--accent), #8fe9ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tagline {
+  margin: 0.35rem 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.main-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Reusable card container */
+.card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* Pipeline connector: visually signals INPUT -> INVESTIGATION -> EVIDENCE -> RISK -> ACTION */
+.main-content > .card {
+  position: relative;
+}
+
+.main-content > .card:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1.75rem;
+  width: 2px;
+  height: 1.75rem;
+  background: linear-gradient(180deg, var(--accent-strong), transparent);
+  transform: translateX(-50%);
+  opacity: 0.45;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border-color-soft);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.disclaimer {
+  max-width: 960px;
+  margin: 0 auto;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   4. INPUT SECTION
+   --------------------------------------------------------- */
+.input-type-selector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color-soft);
+  padding-bottom: 1.25rem;
+}
+
+.input-type-btn {
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.input-type-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.input-type-btn.active {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.input-panel {
+  margin-bottom: 1.25rem;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.text-input,
+.dropzone {
+  width: 100%;
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.text-input {
+  padding: 0.85rem 1rem;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.text-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Screenshot dropzone */
+.dropzone {
+  position: relative;
+  border: 1.5px dashed var(--border-color);
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dropzone:hover {
+  border-color: var(--accent);
+  background-color: rgba(63, 208, 255, 0.04);
+}
+
+.dropzone.dragover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone-text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  pointer-events: none;
+}
+
+.preview-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.screenshot-preview {
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  object-fit: contain;
+}
+
+.remove-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 1;
+  position: relative;
+}
+
+.remove-btn:hover {
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.investigate-btn {
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+  border: none;
+  color: #04141b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.8rem 1.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  box-shadow: 0 6px 18px rgba(63, 208, 255, 0.25);
+}
+
+.investigate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(63, 208, 255, 0.35);
+}
+
+.investigate-btn:active {
+  transform: translateY(0);
+}
+
+.investigate-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------
+   5. INVESTIGATION PROGRESS / TIMELINE (Loading state)
+   --------------------------------------------------------- */
+.investigation-progress {
+  border-color: var(--accent-border, var(--border-color));
+}
+
+.progress-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-left: 0.5rem;
+}
+
+.progress-step {
+  position: relative;
+  padding: 0.65rem 0 0.65rem 2rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.progress-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--bg-elevated-2);
+  border: 2px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.progress-step::after {
+  content: "";
+  position: absolute;
+  left: 4.5px;
+  top: 1.6rem;
+  bottom: -0.65rem;
+  width: 1px;
+  background-color: var(--border-color);
+}
+
+.progress-step:last-child::after {
+  display: none;
+}
+
+/* Step states, toggled via classes by script.js later */
+.progress-step.pending {
+  color: var(--text-muted);
+}
+
+.progress-step.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.progress-step.active::before {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+.progress-step.done {
+  color: var(--text-secondary);
+}
+
+.progress-step.done::before {
+  border-color: var(--low-color);
+  background-color: var(--low-color);
+}
+
+.progress-step.error {
+  color: var(--error-color);
+}
+
+.progress-step.error::before {
+  border-color: var(--error-color);
+  background-color: var(--error-color);
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px var(--accent-soft); }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+/* Generic loading spinner utility, usable anywhere */
+.loading-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  gap: 0.5rem;
+}
+
+/* ---------------------------------------------------------
+   6. ERROR STATE
+   --------------------------------------------------------- */
+.error-state {
+  background-color: var(--error-bg);
+  border: 1px solid var(--critical-border);
+  color: var(--error-color);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.error-state::before {
+  content: "⚠";
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------
+   7. RESULT SECTION — RISK SCORE / BADGE
+   --------------------------------------------------------- */
+.risk-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color-soft);
+}
+
+.risk-score-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.4rem;
+  min-width: 140px;
+}
+
+.risk-score-value {
+  font-size: 2.4rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.risk-score-max {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.risk-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-elevated-2);
+  color: var(--text-secondary);
+}
+
+.risk-level-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* ---------------------------------------------------------
+   8. RISK STATE UTILITY CLASSES — .low .medium .high .critical
+   Reusable across badges, cards, borders, text.
+   --------------------------------------------------------- */
+.low {
+  color: var(--low-color);
+  background-color: var(--low-bg);
+  border-color: var(--low-border) !important;
+}
+
+.medium {
+  color: var(--medium-color);
+  background-color: var(--medium-bg);
+  border-color: var(--medium-border) !important;
+}
+
+.high {
+  color: var(--high-color);
+  background-color: var(--high-bg);
+  border-color: var(--high-border) !important;
+}
+
+.critical {
+  color: var(--critical-color);
+  background-color: var(--critical-bg);
+  border-color: var(--critical-border) !important;
+}
+
+/* Risk level badge variants keyed by data-level, mirroring the utility classes */
+.risk-level-badge[data-level="low"] {
+  color: var(--low-color);
+  background-color: var(--low-bg);
+  border-color: var(--low-border);
+}
+
+.risk-level-badge[data-level="medium"] {
+  color: var(--medium-color);
+  background-color: var(--medium-bg);
+  border-color: var(--medium-border);
+}
+
+.risk-level-badge[data-level="high"] {
+  color: var(--high-color);
+  background-color: var(--high-bg);
+  border-color: var(--high-border);
+}
+
+.risk-level-badge[data-level="critical"] {
+  color: var(--critical-color);
+  background-color: var(--critical-bg);
+  border-color: var(--critical-border);
+  animation: critical-glow 1.6s infinite ease-in-out;
+}
+
+@keyframes critical-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 94, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 77, 94, 0); }
+}
+
+/* Score number colored by risk level, set via class on #risk-score-value */
+.risk-score-value.low { background: none; }
+.risk-score-value.medium { background: none; }
+.risk-score-value.high { background: none; }
+.risk-score-value.critical { background: none; }
+
+/* ---------------------------------------------------------
+   9. SCAM CATEGORY
+   --------------------------------------------------------- */
+.scam-category-section {
+  margin-bottom: 1.5rem;
+}
+
+.scam-category-value {
+  display: inline-block;
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------
+   10. EVIDENCE CARDS ("Why?")
+   --------------------------------------------------------- */
+.evidence-section {
+  margin-bottom: 1.5rem;
+}
+
+.evidence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.evidence-item,
+.evidence-list li {
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.evidence-item strong,
+.evidence-list li strong {
+  color: var(--text-primary);
+}
+
+/* Evidence cards can carry a risk-level accent, e.g. class="evidence-item high" */
+.evidence-item.low,
+.evidence-list li.low { border-left-color: var(--low-color); }
+.evidence-item.medium,
+.evidence-list li.medium { border-left-color: var(--medium-color); }
+.evidence-item.high,
+.evidence-list li.high { border-left-color: var(--high-color); }
+.evidence-item.critical,
+.evidence-list li.critical { border-left-color: var(--critical-color); }
+
+/* ---------------------------------------------------------
+   11. SHOW INVESTIGATION (expandable) + investigation timeline
+   --------------------------------------------------------- */
+.show-investigation {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-elevated-2);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.show-investigation summary {
+  cursor: pointer;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.show-investigation summary::-webkit-details-marker {
+  display: none;
+}
+
+.show-investigation summary::after {
+  content: "▾";
+  transition: transform 0.15s ease;
+}
+
+.show-investigation[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.investigation-details {
+  padding: 0 1.1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  border-top: 1px solid var(--border-color-soft);
+  padding-top: 1.1rem;
+}
+
+.investigation-details h4 {
+  margin-bottom: 0.4rem;
+}
+
+.detected-signals-list,
+#detected-signals-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+#detected-signals-list li {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.suspicious-text-block p,
+#suspicious-text-value {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.extracted-urls-block ul,
+#extracted-urls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+#extracted-urls-list li {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+/* Investigation steps rendered as a vertical timeline */
+#investigation-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  counter-reset: step-counter;
+  margin-left: 0.25rem;
+}
+
+#investigation-steps-list li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  counter-increment: step-counter;
+}
+
+#investigation-steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background-color: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+#investigation-steps-list li::after {
+  content: "";
+  position: absolute;
+  left: 0.575rem;
+  top: 1.65rem;
+  bottom: -0.5rem;
+  width: 1px;
+  background-color: var(--border-color);
+}
+
+#investigation-steps-list li:last-child::after {
+  display: none;
+}
+
+.confidence-block p,
+#confidence-value {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.limitations-block p,
+#limitations-value {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------
+   12. RECOMMENDATION CARDS
+   --------------------------------------------------------- */
+.recommendations-section {
+  margin-bottom: 0;
+}
+
+.recommendations-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.recommendation-card,
+.recommendations-list li {
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.recommendation-card::before,
+.recommendations-list li::before {
+  content: "✓";
+  color: var(--low-color);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------
+   13. SCAN HISTORY
+   --------------------------------------------------------- */
+.scan-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.scan-history-empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.scan-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: var(--bg-elevated-2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.scan-history-item:hover {
+  border-color: var(--accent);
+}
+
+.scan-history-item .history-input-type {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.scan-history-item .history-snippet {
+  flex: 1;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scan-history-item .history-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
+}
+
+/* ---------------------------------------------------------
+   14. RESPONSIVE / MOBILE
+   --------------------------------------------------------- */
+@media (max-width: 720px) {
+  .main-content {
+    padding: 1.25rem 1rem 2.5rem;
+    gap: 1.25rem;
+  }
+
+  .card {
+    padding: 1.15rem;
+    border-radius: var(--radius-md);
+  }
+
+  .site-header {
+    padding: 1.15rem 1rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .input-type-selector {
+    gap: 0.4rem;
+  }
+
+  .input-type-btn {
+    flex: 1 1 calc(50% - 0.4rem);
+    text-align: center;
+    padding: 0.6rem 0.5rem;
+  }
+
+  .risk-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .risk-score-value {
+    font-size: 2rem;
+  }
+
+  .recommendations-list {
+    grid-template-columns: 1fr;
+  }
+
+  .action-row {
+    justify-content: stretch;
+  }
+
+  .investigate-btn {
+    width: 100%;
+  }
+
+  .scan-history-item {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .input-type-btn {
+    flex: 1 1 100%;
+  }
+}
