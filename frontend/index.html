@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScamLens — Investigate Before You Trust</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header id="site-header" class="site-header">
+    <div class="header-inner">
+      <div id="logo" class="logo">
+        <span class="logo-mark" aria-hidden="true">🔍</span>
+        <span class="logo-text">ScamLens</span>
+      </div>
+      <p id="tagline" class="tagline">Investigate before you trust.</p>
+    </div>
+  </header>
+
+  <main id="main-content" class="main-content">
+
+    <!-- ===================== INPUT SECTION ===================== -->
+    <section id="input-section" class="card input-section" aria-labelledby="input-section-heading">
+      <h2 id="input-section-heading">Start an Investigation</h2>
+
+      <!-- Input type selector -->
+      <div id="input-type-selector" class="input-type-selector" role="tablist" aria-label="Select input type">
+        <button type="button" class="input-type-btn active" id="type-btn-screenshot" data-input-type="screenshot" role="tab" aria-selected="true">
+          Screenshot
+        </button>
+        <button type="button" class="input-type-btn" id="type-btn-message" data-input-type="message" role="tab" aria-selected="false">
+          Message
+        </button>
+        <button type="button" class="input-type-btn" id="type-btn-url" data-input-type="url" role="tab" aria-selected="false">
+          URL
+        </button>
+        <button type="button" class="input-type-btn" id="type-btn-email" data-input-type="email" role="tab" aria-selected="false">
+          Email
+        </button>
+      </div>
+
+      <!-- Screenshot upload panel -->
+      <div id="panel-screenshot" class="input-panel" data-panel="screenshot">
+        <label for="screenshot-upload" class="input-label">Upload a screenshot</label>
+        <div id="screenshot-dropzone" class="dropzone">
+          <input type="file" id="screenshot-upload" name="screenshot-upload" accept="image/*" class="file-input">
+          <p class="dropzone-text">Drag &amp; drop an image here, or click to browse</p>
+          <div id="screenshot-preview-wrapper" class="preview-wrapper" hidden>
+            <img id="screenshot-preview" class="screenshot-preview" alt="Uploaded screenshot preview">
+            <button type="button" id="screenshot-remove-btn" class="remove-btn">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message panel -->
+      <div id="panel-message" class="input-panel" data-panel="message" hidden>
+        <label for="message-textarea" class="input-label">Paste the suspicious message</label>
+        <textarea id="message-textarea" name="message-textarea" class="text-input" rows="6"
+          placeholder="Paste the message text here..."></textarea>
+      </div>
+
+      <!-- URL panel -->
+      <div id="panel-url" class="input-panel" data-panel="url" hidden>
+        <label for="url-input" class="input-label">Enter a URL to investigate</label>
+        <input type="url" id="url-input" name="url-input" class="text-input"
+          placeholder="https://example.com/suspicious-link">
+      </div>
+
+      <!-- Email panel -->
+      <div id="panel-email" class="input-panel" data-panel="email" hidden>
+        <label for="email-textarea" class="input-label">Paste the full email (headers + body if possible)</label>
+        <textarea id="email-textarea" name="email-textarea" class="text-input" rows="8"
+          placeholder="Paste the email content here..."></textarea>
+      </div>
+
+      <!-- Investigate action -->
+      <div class="action-row">
+        <button type="button" id="investigate-btn" class="investigate-btn">Investigate</button>
+      </div>
+    </section>
+
+    <!-- ===================== INVESTIGATION PROGRESS ===================== -->
+    <section id="investigation-progress" class="card investigation-progress" hidden aria-live="polite" aria-labelledby="progress-heading">
+      <h2 id="progress-heading">Investigation in Progress</h2>
+      <ul id="progress-steps" class="progress-steps">
+        <!-- Progress steps will be inserted here by script.js -->
+      </ul>
+    </section>
+
+    <!-- ===================== FINAL RESULT SECTION ===================== -->
+    <section id="result-section" class="card result-section" hidden aria-labelledby="result-heading">
+      <h2 id="result-heading">Investigation Result</h2>
+
+      <!-- Risk score + level -->
+      <div id="risk-summary" class="risk-summary">
+        <div id="risk-score-display" class="risk-score-display">
+          <span id="risk-score-value" class="risk-score-value">--</span>
+          <span class="risk-score-max">/100</span>
+        </div>
+        <div id="risk-level-badge" class="risk-level-badge" data-level="unknown">
+          <span id="risk-level-text">Unknown</span>
+        </div>
+      </div>
+
+      <!-- Scam category -->
+      <div id="scam-category-section" class="scam-category-section">
+        <h3>Scam Category</h3>
+        <p id="scam-category-value" class="scam-category-value">—</p>
+      </div>
+
+      <!-- Why? evidence section -->
+      <div id="evidence-section" class="evidence-section">
+        <h3>Why?</h3>
+        <ul id="evidence-list" class="evidence-list">
+          <!-- Evidence items inserted by script.js -->
+        </ul>
+      </div>
+
+      <!-- Show Investigation expandable -->
+      <details id="show-investigation" class="show-investigation">
+        <summary id="show-investigation-summary">Show Investigation</summary>
+        <div id="investigation-details" class="investigation-details">
+          <div id="detected-signals" class="detected-signals">
+            <h4>Detected Signals</h4>
+            <ul id="detected-signals-list"></ul>
+          </div>
+          <div id="suspicious-text-block" class="suspicious-text-block">
+            <h4>Suspicious Text</h4>
+            <p id="suspicious-text-value"></p>
+          </div>
+          <div id="extracted-urls-block" class="extracted-urls-block">
+            <h4>Extracted URLs</h4>
+            <ul id="extracted-urls-list"></ul>
+          </div>
+          <div id="investigation-steps-block" class="investigation-steps-block">
+            <h4>Investigation Steps</h4>
+            <ol id="investigation-steps-list"></ol>
+          </div>
+          <div id="confidence-block" class="confidence-block">
+            <h4>Confidence</h4>
+            <p id="confidence-value"></p>
+          </div>
+          <div id="limitations-block" class="limitations-block">
+            <h4>Limitations</h4>
+            <p id="limitations-value"></p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Recommended actions -->
+      <div id="recommendations-section" class="recommendations-section">
+        <h3>Recommended Actions</h3>
+        <ul id="recommendations-list" class="recommendations-list">
+          <!-- Recommendations inserted by script.js -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== SCAN HISTORY ===================== -->
+    <section id="scan-history-section" class="card scan-history-section" aria-labelledby="history-heading">
+      <h2 id="history-heading">Scan History</h2>
+      <ul id="scan-history-list" class="scan-history-list">
+        <li id="scan-history-empty" class="scan-history-empty">No scans yet.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER / DISCLAIMER ===================== -->
+  <footer id="site-footer" class="site-footer">
+    <p id="disclaimer" class="disclaimer">
+      ScamLens provides an automated risk assessment based on available evidence and does not
+      guarantee accuracy. It is not a substitute for professional legal, financial, or law
+      enforcement advice. Always verify independently before taking action.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
